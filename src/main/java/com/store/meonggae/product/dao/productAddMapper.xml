@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.store.meonggae.product">
+	<!-- 상품을 사용자별로 선택 -->
+	<select id="selectProductByUser"
+		resultType="productDomain"
+		parameterType="int">
+		select gi.name as img, g.goods_num as goodsNum,
+		g.mem_num_sell as memNumSell, g.mem_num_buy,
+		g.category_num, gc.name as
+		category,
+		g.name, g.detail, g.price, g.delivery_fee, g.cnt,
+		g.trade_method_code, g.location,
+		g.quality_code, g.sell_status_code
+		from GOODS g, goods_img gi
+		,member_detail md, goods_category gc
+		where
+		g.goods_num = gi.goods_num
+		and g.DELETE_FLAG='N'
+		and md.mem_num = g.mem_num_sell and
+		g.category_num = gc.category_num
+		and
+		md.mem_num = #{memNum,
+		jdbcType=INTEGER}
+		order by g.SELL_STATUS_CODE ASC, g.input_date DESC
+	</select>
+
+	<select id="selectProductByGoodsNum"
+		resultType="productDomain"
+		parameterType="String">
+		select gi.name as img, g.goods_num as goodsNum,
+		g.mem_num_sell, g.mem_num_buy,
+		g.category_num, gc.name as
+		category,
+		g.name, g.detail, g.price, g.cnt, g.trade_method_code,
+		g.location,
+		g.quality_code, g.sell_status_code
+		from GOODS g, goods_img
+		gi
+		,member_detail md, goods_category gc
+		where g.goods_num = gi.goods_num
+		and md.mem_num = g.mem_num_sell and
+		g.category_num = gc.category_num
+		and
+		g.goods_num = #{goodsNum, jdbcType=VARCHAR}
+	</select>
+	<!-- 상품 추가 -->
+	<insert id="insertProduct" parameterType="productDomain">
+	
+		insert into goods (
+		goods_num,
+		mem_num_sell,
+		name,
+		detail,
+		price,
+		delivery_fee,
+		CNT,
+		trade_method_code,
+		input_date,
+		category_num,
+		location,
+		quality_code,
+		sell_status_code
+		)
+		values(
+		MEONGAE.SEQ_GOODS.NEXTVAL,
+		#{mem_num_sell, jdbcType=INTEGER},
+		#{name},
+		#{detail},
+		#{price},
+		#{delivery_fee, jdbcType=INTEGER},
+		0,
+		#{trade_method_code, jdbcType=CHAR},
+		SYSDATE,
+		#{category_num, jdbcType=VARCHAR},
+		#{location, jdbcType=VARCHAR},
+		#{quality_code,
+		jdbcType=VARCHAR},
+		'N'
+		)
+	</insert>
+
+	<!-- 상품 이미지 추가 -->
+	<insert id="insertProductImg"
+		parameterType="productDomain">
+		insert into goods_img (goods_img_num, goods_num, name, IP, input_date)
+		values(MEONGAE.SEQ_GOODS_IMG.NEXTVAL, MEONGAE.SEQ_GOODS.CURRVAL, #{img}, #{ip}, SYSDATE)
+	</insert>
+
+	<!-- 상품 업데이트 -->
+	<update id="updateProduct" parameterType="productDomain">
+    update goods
+    set
+    name = #{name, jdbcType=VARCHAR},
+    location = #{location, jdbcType=VARCHAR},
+    price = #{price, jdbcType=VARCHAR},
+    sell_status_code = #{sell_status_code, jdbcType=CHAR}
+    where goods_num = #{goodsNum, jdbcType=VARCHAR}
+</update>
+<!-- 상품 삭제 -->
+<update id="deleteProduct" parameterType="productDomain">
+	update goods 
+	set DELETE_FLAG='Y', DELETE_DATE=SYSDATE 
+	where  goods_num = #{goodsNum, jdbcType=VARCHAR}
+</update>
+<!-- 상품 판매 -->
+<update id="buyProduct" parameterType="productDomain">
+update GOODS
+set MEM_NUM_BUY=#{mem_num_buy, jdbcType=INTEGER}, SELL_DATE=SYSDATE, SELL_STATUS_CODE='S'
+where GOODS_NUM=#{goodsNum, jdbcType=VARCHAR}
+</update>
+
+<!-- 판매자 선택 -->
+<select id="checkBuyer" resultType="BuyerDomain" parameterType="String">
+select distinct c.MEM_NUM_SEND, m.NICK
+from chat c
+join member m on c.MEM_NUM_SEND = m.MEM_NUM
+where MEM_NUM_SEND is not null
+and MEM_NUM_RECV is not null
+and m.MEM_STATUS='N'
+and GOODS_NUM=#{goodsNum, jdbcType=VARCHAR}
+</select>
+</mapper>

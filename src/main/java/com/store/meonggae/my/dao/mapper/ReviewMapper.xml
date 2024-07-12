@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.store.meonggae.Review">
+
+<!-- 내가 쓴 후기 -->
+<select id="myReviewList" parameterType="searchVO" resultType="myReviewDomain">
+select	goodsNum, seller, reviewContents, inputDate, starScore
+from	(
+		select  r.goods_num goodsNum, m.nick seller, r.CONTENT reviewContents, r.INPUT_DATE inputDate, s.STAR starScore,
+				row_number() over(order by r.INPUT_DATE desc) rnum
+		from	review r, goods g, MEMBER m, star_rate s
+		where   r.goods_num=g.goods_num
+				and r.goods_num=s.goods_num
+				and g.mem_num_sell=m.mem_num
+				and r.mem_num='${memnumORnick}'
+				and r.delete_flag='N'
+		)
+where	rnum between ${startNum} and ${endNum}
+</select>
+
+<!-- 내가 쓴 후기 count -->
+<select id="myReviewCount" resultType="Integer" parameterType="String">
+select	count(*)
+from	review
+where	mem_num='${memnum}'
+</select>
+
+<!-- 작성 가능 리뷰 -->
+<select id="writeReviewList" parameterType="String" resultType="writeReviewDomain">
+select		g.goods_num goodsNum, g.name goodsName, m.nick seller
+from		goods g, member m, review r
+where   	g.mem_num_sell=m.mem_num
+			and r.goods_num(+)=g.goods_num
+			and r.input_date is null
+			and MEM_NUM_BUY='${memnum}'
+			and g.delete_Flag='N'
+order by	g.sell_date desc
+</select>
+
+<!-- 리뷰삭제 -->
+<update id="deleteReview" parameterType="String">
+update	review
+set		delete_flag='Y'
+where	goods_num='${goodsnum}'
+</update>
+
+<!-- 별점삭제 -->
+<update id="deleteStarScore" parameterType="String">
+update	star_rate
+set		delete_flag='Y'
+where	goods_num='${goodsnum}'
+</update>
+
+<!-- 리뷰작성 -->
+<insert id="insertReview" parameterType="wrVO">
+insert into REVIEW(MEM_NUM, GOODS_NUM, CONTENT)
+values('${memNum}', '${goodsNum}', '${contents}')
+</insert>
+
+<!-- 별점추가 -->
+<insert id="insertStar" parameterType="starScoreVO">
+insert into star_rate(MEM_NUM, GOODS_NUM, STAR)
+values('${memNum}', '${goodsNum}', '${starScore}')
+</insert>
+
+</mapper>

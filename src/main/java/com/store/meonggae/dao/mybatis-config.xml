@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+<properties resource="properties/database.properties"/>
+<typeAliases>
+<!-- login -->
+	<typeAlias type="com.store.meonggae.user.login.vo.LoginVO" alias="loginVO"/>
+	<typeAlias type="com.store.meonggae.user.login.domain.LoginDomain" alias="loginDomain"/>
+<!-- event -->	
+	<typeAlias type="com.store.meonggae.event.vo.PagingVO" alias="pagingVO"/>
+	<typeAlias type="com.store.meonggae.event.vo.EventVO" alias="eventVO"/>
+	<typeAlias type="com.store.meonggae.event.domain.EventDomain" alias="eventDomain"/>
+<!-- product -->
+
+	<typeAlias type="com.store.meonggae.product.domain.CategoryDomain" alias="categoryDomain"/>
+	<typeAlias type="com.store.meonggae.product.domain.SearchProductDetailDomain" alias="searchProductDetailDomain"/>
+	<typeAlias type="com.store.meonggae.product.domain.SearchProductDomain" alias="searchProductDomain"/>
+	<typeAlias type="com.store.meonggae.product.domain.SellerInfoDomain" alias="sellerInfoDomain"/>
+	<typeAlias type="com.store.meonggae.product.domain.SellOtherPrdDomain" alias="sellOtherPrdDomain"/>
+	<typeAlias type="com.store.meonggae.product.domain.SearchReviewDomain" alias="searchReviewDomain"/>
+
+	<typeAlias type="com.store.meonggae.product.domain.ProductDomain" alias="productDomain"/>
+	<typeAlias type="com.store.meonggae.product.domain.BuyerDomain" alias="buyerDomain"/>
+	
+<!-- store,my -->
+	<!-- store -->
+	<typeAlias type="com.store.meonggae.my.store.domain.StoreMainDomain" alias="storeMainDomain"/>
+	<typeAlias type="com.store.meonggae.my.store.domain.ReviewDomain" alias="reviewDomain"/>
+	<typeAlias type="com.store.meonggae.my.store.VO.ReviewVO" alias="reviewVO"/>
+	
+	<!-- my -->
+	<typeAlias type="com.store.meonggae.my.domain.GoodsDomain" alias="goodsDomain"/>
+	<typeAlias type="com.store.meonggae.my.domain.PersonalDomain" alias="personalDomain"/>
+	<typeAlias type="com.store.meonggae.my.vo.PwVO" alias="pwVO"/>
+	<typeAlias type="com.store.meonggae.my.vo.PersonalInfoVO" alias="piVO"/>
+	
+	<typeAlias type="com.store.meonggae.my.domain.InquiryCategoryDomain" alias="inquiryCategoryDomain"/>
+	<typeAlias type="com.store.meonggae.my.domain.InquiryDomain" alias="inquiryDomain"/>
+	<typeAlias type="com.store.meonggae.my.domain.InquiryDetailDomain" alias="inquiryDetailDomain"/>
+	<typeAlias type="com.store.meonggae.my.vo.InquiryVO" alias="iqVO"/>
+	<typeAlias type="com.store.meonggae.my.vo.InquiryModifyVO" alias="imfVO"/>
+	<typeAlias type="com.store.meonggae.my.domain.InquiryModifyDomain" alias="inquiryModifyDomain"/>
+	
+	<typeAlias type="com.store.meonggae.my.domain.MyReviewDomain" alias="myReviewDomain"/>
+	<typeAlias type="com.store.meonggae.my.domain.WriteReviewDomain" alias="writeReviewDomain"/>
+	<typeAlias type="com.store.meonggae.my.vo.WriteReviewVO" alias="wrVO"/>
+	<typeAlias type="com.store.meonggae.my.vo.StarScoreVO" alias="starScoreVO"/>
+	
+	<typeAlias type="com.store.meonggae.my.pagination.SearchVO" alias="searchVO"/>
+	
+	<!-- 아이디 비밀번호 찾기 -->
+	<typeAlias type="com.store.meonggae.my.acount.vo.ChkAcountVO" alias="chkAcountVO"/>
+	<typeAlias type="com.store.meonggae.my.acount.vo.ChkPwAcountVO" alias="chkPwAcountVO"/>
+	<typeAlias type="com.store.meonggae.my.acount.vo.PwVO" alias="pwVO2"/>
+<!-- store,my -->
+
+</typeAliases>
+  <environments default="development">
+    <environment id="development">
+      <transactionManager type="JDBC"/>
+      <dataSource type="POOLED">
+        <property name="driver" value="${driver}"/>
+        <property name="url" value="${connectionURL}"/>
+        <property name="username" value="${username}"/>
+        <property name="password" value="${password}"/>
+      </dataSource>
+    </environment>
+  </environments>
+  <mappers>
+    <mapper resource="com/store/meonggae/user/login/dao/loginMapper.xml"/>
+    <mapper resource="com/store/meonggae/event/dao/eventMapper.xml"/>
+    <mapper resource="com/store/meonggae/product/mapper/categoryMapper.xml"/>
+    <mapper resource="com/store/meonggae/product/mapper/searchProductMapper.xml"/>
+    <mapper resource="com/store/meonggae/product/mapper/productDetailInfoMapper.xml"/>
+    <mapper resource="com/store/meonggae/user/join/mapper/joinMapper.xml"/>
+    <mapper resource="com/store/meonggae/product/dao/productAddMapper.xml"/>
+    
+   	<!-- 내상점, 마이페이지 시작 -->
+	   	<!-- 내상점 -->
+    <mapper resource="com/store/meonggae/my/store/dao/mapper/storeMapper.xml"/>
+    
+	   	<!-- 마이페이지 -->
+    <mapper resource="com/store/meonggae/my/dao/mapper/MypageMainMapper.xml"/>
+    <mapper resource="com/store/meonggae/my/dao/mapper/DibsMapper.xml"/>
+    <mapper resource="com/store/meonggae/my/dao/mapper/SalesListMapper.xml"/>
+    <mapper resource="com/store/meonggae/my/dao/mapper/PersonalMapper.xml"/>
+    <mapper resource="com/store/meonggae/my/dao/mapper/InquiryMapper.xml"/>
+    <mapper resource="com/store/meonggae/my/dao/mapper/ReviewMapper.xml"/>
+    
+    	<!-- 아이디 비밀번호 찾기 -->
+    <mapper resource="com/store/meonggae/my/acount/dao/mapper/AcountMapper.xml"/>
+    <!-- 내상점, 마이페이지 끝 -->
+    
+    <!-- 멍게톡 채팅 -->
+    <mapper resource="com/store/meonggae/talk/dao/mapper/chatMapper.xml"/>
+	<!-- 멍게톡 채팅 끝 -->
+	
+	<!-- 사이트 방문자수 ++ -->
+    <mapper resource="com/store/meonggae/visitor/dao/mapper/visitorCntMapper.xml"/>
+	<!-- 사이트 방문자수 ++ 끝 -->
+  </mappers>
+</configuration>

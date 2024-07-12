@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.store.meonggae.personal">
+
+<!-- 비번검색 -->
+<select id="selectPw" resultType="String" parameterType="String">
+select	PASS
+from    MEMBER_DETAIL
+where   MEM_NUM='${memnum}'
+</select>
+
+<!-- 개인정보 조회 -->
+<select id="selectPersonal" resultType="personalDomain" parameterType="String">
+select	NAME, ADDR, ADDR_DETAIL addrDetail, TEL, ZIPCODE, EMAIL
+from    MEMBER_DETAIL
+where   MEM_NUM='${memnum}'
+</select>
+
+<!-- 비밀번호 변경 -->
+<update id="updatePw" parameterType="pwVO">
+update	MEMBER_DETAIL
+set		PASS='${pass}'
+where   MEM_NUM='${memNum}'
+</update>
+
+<!-- 닉네임 중복확인 -->
+<select id="selectNick" resultType="String" parameterType="String">
+select	nick
+from	member
+where	nick='${nick}'
+</select>
+
+<!-- 개인정보 수정 -->
+
+<!-- member_detail 테이블 -->
+<update id="updateMemberDetail" parameterType="piVO">
+update	MEMBER_DETAIL
+set     ADDR='${addr0}', ADDR_DETAIL='${addr1}', ZIPCODE='${zipcode}', TEL='${tel}', EMAIL='${email}'
+where   MEM_NUM='${memnun}'
+</update>
+
+<!-- member 테이블 : 프로필O -->
+<update id="updateMemberNick" parameterType="piVO">
+update	MEMBER
+set     NICK='${nick}', IMG='${profile}'
+where   MEM_NUM='${memnun}'
+</update>
+
+<!-- member 테이블 : 프로필X -->
+<update id="updateMember" parameterType="piVO">
+update	MEMBER
+set     NICK='${nick}'
+where   MEM_NUM='${memnun}'
+</update>
+
+<!-- 탈퇴 -->
+<update id="quitMember" parameterType="String">
+update	MEMBER
+set		MEM_STATUS='W'
+where   mem_num='${memnun}'
+</update>
+
+</mapper>

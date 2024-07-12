@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+	
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<annotation-driven />
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<resources mapping="/resources/**" location="/resources/" />
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	
+	<context:component-scan base-package="com.store.meonggae" />
+	
+	<!-- 관리자 세션 체크 interceptor 시작-->
+	<interceptors>
+		<!-- 관리자가 로그인 했는지 시작 -->
+		<interceptor>
+			<mapping path="/mgr/**"/>
+			<mapping path="/mng/**"/>
+			<exclude-mapping path="/mgr/login/mgr_login_frm.do"/>
+			<exclude-mapping path="/mgr/login/mgr_main.do"/>
+			<exclude-mapping path="/mgr/login/mgr_second_auth_frm.do"/>
+			<exclude-mapping path="/mgr/login/mgr_second_auth_process.do"/>
+			<beans:bean id="mgrInterceptor" class="com.store.meonggae.mgr.interceptor.MgrInterceptor"></beans:bean>
+		</interceptor>
+		<!-- 관리자가 로그인 했는지 끝 -->
+		
+		<!-- 관리자 관리 페이지는 슈퍼 관리자만 - 시작 -->
+		<interceptor>
+			<mapping path="/mgr/manager/**"/>
+			<beans:bean id="mgrManagerInterceptor" class="com.store.meonggae.mgr.interceptor.MgrManagerInterceptor"></beans:bean>
+		</interceptor>
+		<!-- 관리자 관리 페이지는 슈퍼 관리자만 - 끝 -->
+		
+		<!-- 사용자 관리 권한이 있는 관리자 (회원, 신고, 문의, 후기, 물품, 이벤트) - 시작 -->
+		<interceptor>
+			<mapping path="/mgr/member/**"/>
+			<mapping path="/mng/report/**"/>
+			<mapping path="/mgr/goods/**"/>
+			<mapping path="/mgr/event/**"/>
+			<beans:bean id="mgrMemberInterceptor" class="com.store.meonggae.mgr.interceptor.MgrMemberInterceptor"></beans:bean>
+		</interceptor>
+		<!-- 사용자 관리 권한이 있는 관리자 (회원, 신고, 문의, 후기, 물품, 이벤트) - 끝 -->
+		
+		<!-- 대시보드 조회만 가진 최하위 관리자 -->
+		<interceptor>
+			<mapping path="/mgr/member/**"/>
+			<mapping path="/mng/report/**"/>
+			<mapping path="/mng/inquiry/**"/>
+			<mapping path="/mgr/review/**"/>
+			<mapping path="/mgr/goods/**"/>
+			<mapping path="/mng/event/**"/>
+			<beans:bean id="mgrDahsOnlyInterceptor" class="com.store.meonggae.mgr.interceptor.MgrDashOnlyInterceptor"></beans:bean>
+		</interceptor>
+		<!-- 대시보드 조회만 가진 최하위 관리자 -->
+		
+	</interceptors>
+	<!-- 관리자 세션 체크 interceptor 끝-->
+	
+<!-- 	<interceptors>
+	<interceptor>
+			<mapping path="/**"/>
+				<beans:bean id="loginCheckInterceptor" class="com.store.meonggae.user.login.interceptor.LoginCheckInterCeptor"></beans:bean>
+		</interceptor>
+		<interceptor>
+			<mapping path="/**"/>
+				<beans:bean id="loginInterceptor" class="com.store.meonggae.user.login.interceptor.LoginInterCeptor"></beans:bean>
+		</interceptor>
+	</interceptors> -->
+	
+<!-- 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+      
+      <beans:property name="maxUploadSize" value="10485760" />
+      <beans:property name="defaultEncoding" value="utf-8" />
+   
+   </beans:bean> -->
+</beans:beans>
+
