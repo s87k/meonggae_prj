@@ -61,6 +61,6 @@ from VIEW_EVENT
 <select id="eventCarousel" resultType="com.store.meonggae.event.domain.EventDomain">
 select EVENT_NUM as eventNum, img, title
 from VIEW_EVENT
+where EVENT_STATUS='진행'
 </select>
-<!-- where EVENT_STATUS='진행' -->
 </mapper>
