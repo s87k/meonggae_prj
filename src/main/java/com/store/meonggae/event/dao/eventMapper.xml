@@ -43,7 +43,7 @@ from VIEW_EVENT
 		</choose>
 	</if>
 </where>
-) where rnum between #{ startPageNum } and #{ endPageNum }
+) where rnum between #{ startPageNum }  and #{ endPageNum }
 </select>
 <!-- 이벤트 상세페이지 event_num -->
 <select id="selectDetailEvent" resultType="com.store.meonggae.event.domain.EventDomain" parameterType="int">
