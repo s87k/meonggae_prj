@@ -37,7 +37,7 @@ pipeline {
         stage('Copy WAR') {
             steps {
                 script {
-                    def warFile = 'target\\sist-1.0.0-BUILD-SNAPSHOT.war'
+                    def warFile = 'target\\meonggae-1.0.0-BUILD-SNAPSHOT.war'
                     def destDir = 'C:\\test_docker'
                     bat """
                     if not exist ${destDir} mkdir ${destDir}
