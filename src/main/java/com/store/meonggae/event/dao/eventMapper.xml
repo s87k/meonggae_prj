@@ -34,10 +34,10 @@ from VIEW_EVENT
 	</if>
 	<if test="eventStatus != null and eventStatus != ''">
 		<choose>
-			<when test="eventStatus == '진행'">
+			<when test='eventStatus.equals("진행")'>
 		 		and to_date(end_date,'yyyy-mm-dd') >= to_date(to_char(SYSDATE, 'yyyy-mm-dd'),'yyyy-mm-dd')
 			</when>
-			<when test="eventStatus == '종료'">
+			<when test='eventStatus.equals("종료")'>
 				and <![CDATA[to_date(end_date,'yyyy-mm-dd') < to_date(to_char(SYSDATE, 'yyyy-mm-dd'),'yyyy-mm-dd')]]>
 			</when>
 		</choose>
