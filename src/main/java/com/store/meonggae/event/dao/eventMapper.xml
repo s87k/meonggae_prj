@@ -35,10 +35,10 @@ from VIEW_EVENT
 	<if test="eventStatus != null and eventStatus != ''">
 		<choose>
 			<when test="eventStatus == '진행'">
-		 		and end_date >= to_char(SYSDATE, 'yyyy-mm-dd')
+		 		and to_date(end_date,'yyyy-mm-dd') >= to_date(to_char(SYSDATE, 'yyyy-mm-dd'),'yyyy-mm-dd')
 			</when>
 			<when test="eventStatus == '종료'">
-				and <![CDATA[end_date < to_char(SYSDATE, 'yyyy-mm-dd')]]>
+				and <![CDATA[to_date(end_date,'yyyy-mm-dd') < to_date(to_char(SYSDATE, 'yyyy-mm-dd'),'yyyy-mm-dd')]]>
 			</when>
 		</choose>
 	</if>
