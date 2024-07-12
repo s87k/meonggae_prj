@@ -41,7 +41,7 @@ pipeline {
                     def destDir = 'C:\\test_docker'
                     bat """
                     if not exist ${destDir} mkdir ${destDir}
-                    copy ${warFile} ${destDir}\\test_meonggae.war
+                    copy ${warFile} ${destDir}\\meonggae_prj.war
                     """
                 }
             }
