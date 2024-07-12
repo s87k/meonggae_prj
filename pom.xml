@@ -319,5 +319,21 @@
                 </configuration>
             </plugin>
 		</plugins>
+		 <resources>
+            <resource>
+                <directory>/</directory>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/webapp/WEB-INF</directory>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+        </resources>
 	</build>
 </project>
