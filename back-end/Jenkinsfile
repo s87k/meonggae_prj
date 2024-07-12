@@ -18,7 +18,7 @@ pipeline {
         stage('clone repository') {
             steps {
             git branch:'main',credentialsId:'github-token', 
-                        url:'https://github.com/s87k/new_meonggae_prj.git'
+                        url:'https://github.com/s87k/meonggae_prj.git'
            }
         }
 
